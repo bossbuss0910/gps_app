@@ -30,7 +30,8 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/', routes.index);
+app.get('/gps', routes.index);
+app.get('/login', routes.login);
 
 app.listen(3000, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
@@ -53,30 +54,48 @@ var User = mongoose.model('User');
 //socket
 var io = require('socket.io').listen(app);
 io.sockets.on('connection', function (socket) {
+	//接続された際データベースにあるデータをクライアントに送る
 	socket.on('msg update',function(){
 		User.find(function(err,docs){
 			socket.emit('msg open',docs);
 			});
 	});
-
+	//接続の確認
 	console.log('connected');
-
+	//新規データが送られてきたらデータベースの確認
 	socket.on('msg send', function (msg) {
-		socket.emit('msg push', msg);
-		socket.broadcast.emit('msg push', msg);
-		//登録
-		var user =new User();
-		user.u_id = msg.u_id;
-		user.name = msg.name;
-		user.g_id = msg.g_id;
-		user.lat = msg.lat;
-		user.long = msg.long;
-		user.save(function(err){
-			if (err){console.log(err)}
+		User.findOne({u_id:msg.u_id},function(err,memo){
+		//あったら更新、なかったら登録
+		if (err||memo == null){
+			socket.emit('msg push', msg);
+			socket.broadcast.emit('msg push', msg);
+			//登録
+			var user =new User();
+			user.u_id = msg.u_id;
+			user.name = msg.name;
+                        user.g_id = msg.g_id;
+			user.lat = msg.lat;
+			user.long = msg.long;
+			user.save(function(err){
+				if (err){console.log(err)}
+		   });
+		}
+		else{
+			//更新
+			memo.lat=msg.lat;
+			memo.long=msg.long;
+			memo.save();
+			User.find(function(err,docs){
+				socket.emit('msg open',docs)
+				});
+			}
 			});
-	});
+		});
 	//DBにあるメッセージを削除
 	socket.on('deleteDB', function(drop_user){
+		User.find(function(err,docs){
+			socket.emit('msg open',docs)
+			});
 		User.remove({u_id: drop_user.id})
 		User.remove({ u_id: drop_user.id }, function(err, result){
 			    if (err) {
@@ -86,7 +105,7 @@ io.sockets.on('connection', function (socket) {
 					    }
 			    });
 		});
-	  
+	 //セッションの切断
 	socket.on('disconnect', function() {
 		console.log('disconnected');});
 });

@@ -25,11 +25,12 @@ $(function() {
 		})
 
 	socket.on('msg push', function (msg) {
-		console.log(msg);
+//		console.log(msg);
 		$('#list').prepend($('<dt>' + msg.name + '</dt><dd>' + msg.lat + '</dd>'+'<dd>'+msg.long+'</dd>'));
 	});
 	
 	socket.on('msg open', function(msg){
+		console.log(msg);
 		//DBが空っぽだったら
 		if(msg.length == 0){
 			return;
