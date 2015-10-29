@@ -30,7 +30,7 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/gps', routes.index);
+app.get('/gps/:g_name', routes.index);
 app.get('/login', routes.login);
 
 app.listen(3000, function(){
@@ -41,9 +41,9 @@ app.listen(3000, function(){
 
 var Schema = mongoose.Schema;
 var UserSchema = new Schema({
-	u_id: Number, 
 	name: String,
-	g_id: Number,
+	adress: String,
+	g_name:String,
 	lat:  Number,
 	long: Number
 });
@@ -54,6 +54,22 @@ var User = mongoose.model('User');
 //socket
 var io = require('socket.io').listen(app);
 io.sockets.on('connection', function (socket) {
+	socket.on('login send',function(doc){
+		socket.join(doc.g_name);
+		User.findOne({name:doc.name,adress:doc.adress,g_name:doc.g_name},function(err,memo){
+		//あったら更新、なかったら登録
+		if (err||memo == null){
+			//登録
+			var user =new User();
+			user.name = doc.name;
+			user.adress = doc.adress;
+                        user.g_name = doc.g_name;
+			user.save(function(err){
+				if (err){console.log(err)}
+		   });
+		}
+		});
+	});
 	//接続された際データベースにあるデータをクライアントに送る
 	socket.on('msg update',function(){
 		User.find(function(err,docs){
@@ -64,6 +80,14 @@ io.sockets.on('connection', function (socket) {
 	console.log('connected');
 	//新規データが送られてきたらデータベースの確認
 	socket.on('msg send', function (msg) {
+
+     	　　　　client.get('g_name', function(err, _room) {
+	                   g_name = _g_name;
+			 });
+              　 client.get('name', function(err, _name) {
+		           name = _name;
+			});
+
 		User.findOne({u_id:msg.u_id},function(err,memo){
 		//あったら更新、なかったら登録
 		if (err||memo == null){
@@ -71,7 +95,7 @@ io.sockets.on('connection', function (socket) {
 			socket.broadcast.emit('msg push', msg);
 			//登録
 			var user =new User();
-			user.u_id = msg.u_id;
+			user.adress = msg.adress;
 			user.name = msg.name;
                         user.g_id = msg.g_id;
 			user.lat = msg.lat;
@@ -96,10 +120,10 @@ io.sockets.on('connection', function (socket) {
 		User.find(function(err,docs){
 			socket.emit('msg open',docs)
 			});
-		User.remove({u_id: drop_user.id})
-		User.remove({ u_id: drop_user.id }, function(err, result){
+		User.remove({adress: drop_user.adress})
+		User.remove({adress: drop_user.adress }, function(err, result){
 			    if (err) {
-				    res.send({'error': 'An error has occurred - ' + err});
+				    console.log('remove error');
 				    } else {
 					    console.log('Success: ' + result + ' document(s) deleted');
 					    }

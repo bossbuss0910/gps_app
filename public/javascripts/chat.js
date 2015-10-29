@@ -10,18 +10,18 @@ $(function() {
 
 	
 	$('#btn').click(function() {
-		var u_id = $('#u_id');
+		var adress = $('#adress');
 		var name = $('#name');	 
-		var g_id = $('#g_id');
+		var g_name = $('#g_name');
 		var lat = $('#lat');
 		var long = $('#long');
-		socket.emit('msg send', {u_id:u_id.val(),name:name.val(),g_id:g_id.val(),lat:lat.val(),long:long.val()});
+		socket.emit('msg send', {adress:adress.val(),name:name.val(),g_id:g_id.val(),lat:lat.val(),long:long.val()});
 	});
 
 	$('#delete').click(function(){
-		var u_id = $('#u_id');
+		var adress = $('#adress');
 		var name = $('#name');
-		socket.emit('deleteDB',{id:u_id.val(),name:name.val()});
+		socket.emit('deleteDB',{adress:adress.val(),name:name.val()});
 		})
 
 	socket.on('msg push', function (msg) {

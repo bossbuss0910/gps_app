@@ -1,22 +1,11 @@
 <!doctype html>
-<html lang="ja">
-<head>
-  <meta charset="UTF-8">
-    <title>ログイン前</title>
-    </head>
+<script type="text/javascript" src="/javascripts/login.js"></script>
     <body>
-      <h2>ログイン</h2>
-        <form action="/login" method="GET">
-	    <input type="text" name="email" placeholder="Email"/>
-	        <input type="password" name="password" placeholder="Password"/>
-		    <input type="submit">ログイン</button>
-		      </form>
-
-		        <h2>新規登録</h2>
-			  <form action="/add" method="POST">
-			      <input type="text" name="email" placeholder="Email"/>
-			          <input type="password" name="password" placeholder="Password"/>
-				      <input type="submit">新規登録</button>
-				        </form>
-					</body>
-					</html>
+    <h1>名前</h1><br>
+    <input type="text" name="name" id="name" /><br>
+    <h1>メールアドレス<h1><br>
+    <input type="text" name="address" id="address" /><br>
+    <h1>グループ名</h1><br>
+    <input type="text" name="g_name" id="g_name" /><br>
+    <button id="btn">送信</button><br>
+    </body>
