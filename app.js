@@ -32,9 +32,9 @@ app.configure('production', function(){
 
 app.get('/gps/:g_name', routes.index);
 app.get('/login', routes.login);
-
-app.listen(5000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(process.env.PORT || 5000, function(){
+//app.listen(5000, function(){
+//  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
 
 // DB
@@ -53,6 +53,14 @@ var User = mongoose.model('User');
 
 //socket
 var io = require('socket.io').listen(app);
+if(process.env.XHR){
+	console.log("use xhr-polling");
+	io.configure(function(){
+		io.set('transports', ['xhr-polling']);
+		io.set('polling duration', 10);
+		});
+}
+
 io.sockets.on('connection', function (socket) {
 	socket.on('login send',function(doc){
 		socket.join(doc.g_name);
