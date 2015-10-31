@@ -1,6 +1,8 @@
 //クライアント
 //
-var socket = io.connect();
+var socket = io.connect(location.origin);
+//var socket = new io.Socket();
+//socket.connect();
 
 $(function() {
 	socket.on('connect', function() { 

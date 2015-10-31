@@ -51,7 +51,6 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost', function(err
 		  process.exit(1);
 		  }
 });
-
 var User = mongoose.model('User');
 
 //socket
