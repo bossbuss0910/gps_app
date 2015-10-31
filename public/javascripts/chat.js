@@ -1,6 +1,6 @@
 //クライアント
 //
-var socket = io.connect('http://localhost');
+var socket = io.connect();
 
 $(function() {
 	socket.on('connect', function() { 

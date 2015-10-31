@@ -45,7 +45,7 @@ var UserSchema = new Schema({
 	long: Number
 });
 mongoose.model('User',UserSchema);
-mongoose.connect(process.env.MONGOLAB_URI, function(err){
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost', function(err){
 	  if(err){
 		  console.error(err);
 		  process.exit(1);

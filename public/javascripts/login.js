@@ -1,7 +1,7 @@
 //ログイン画面
 $(function() {
 
-	var socket = io.connect('http://localhost');
+	var socket = io.connect();
 	
 	$('#btn').click(function() {
 		var name = $('#name');
