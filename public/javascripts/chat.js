@@ -1,8 +1,14 @@
 //クライアント
-$(function() {
+//
+var socket = io.connect('http://localhost');
 
-	var socket = io.connect('http://localhost');
+function gps(g_name,name){
+		socket.on('msg push', function (msg) {
+		$('#list').prepend($('<dt>' + msg.name + '</dt><dd>' + msg.lat + '</dd>'+'<dd>'+msg.long+'</dd>'));
+	});
 	
+	}
+$(function() {
 	socket.on('connect', function() { 
 		console.log('successfully sent');
 		socket.emit('msg update');
@@ -24,10 +30,10 @@ $(function() {
 		socket.emit('deleteDB',{adress:adress.val(),name:name.val()});
 		})
 
-	socket.on('msg push', function (msg) {
+//	socket.on('msg push', function (msg) {
 //		console.log(msg);
-		$('#list').prepend($('<dt>' + msg.name + '</dt><dd>' + msg.lat + '</dd>'+'<dd>'+msg.long+'</dd>'));
-	});
+//		$('#list').prepend($('<dt>' + msg.name + '</dt><dd>' + msg.lat + '</dd>'+'<dd>'+msg.long+'</dd>'));
+//	});
 	
 	socket.on('msg open', function(msg){
 		console.log(msg);
