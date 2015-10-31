@@ -55,14 +55,14 @@ var User = mongoose.model('User');
 
 //socket
 var io = require('socket.io').listen(app);
-if(process.env.XHR){
+/**if(process.env.XHR){
 	console.log("use xhr-polling");
 	io.configure(function(){
 		io.set('transports', ['xhr-polling']);
 		io.set('polling duration', 10);
 		});
 }
-
+**/
 io.sockets.on('connection', function (socket) {
 	//部屋の作成
 	socket.on('create room',function(doc){
