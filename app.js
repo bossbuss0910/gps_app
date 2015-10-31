@@ -33,8 +33,6 @@ app.configure('production', function(){
 app.get('/gps/:room', routes.index);
 app.get('/login', routes.login);
 app.listen(process.env.PORT || 5000, function(){
-//app.listen(5000, function(){
-//  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
 });
 // DB
 
@@ -47,7 +45,13 @@ var UserSchema = new Schema({
 	long: Number
 });
 mongoose.model('User',UserSchema);
-mongoose.connect('mongodb://heroku_v3c4ltwb:8ghrf2ab8jloedkb8nj7ti2ha6@ds045604.mongolab.com:45604/heroku_v3c4ltwb');
+//mongoose.connect("mongodb://heroku_v3c4ltwb:8ghrf2ab8jloedkb8nj7ti2ha6@ds045604.mongolab.com:45604/heroku_v3c4ltwb");
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost', function(err){
+	  if(err){
+		      console.error(err);
+		          process.exit(1);
+			    }
+});
 var User = mongoose.model('User');
 
 //socket
