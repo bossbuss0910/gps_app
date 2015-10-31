@@ -5,7 +5,8 @@
   "dependencies": {
     "express": "2.5.11",
     "ejs": ">= 0.0.1",
-    "mongoose":"4.2.2"
+    "socet.io":"0.8",
+    "mongoose":"*"
   },
   "devDependencies": {
   }
