@@ -48,7 +48,7 @@ var UserSchema = new Schema({
 	long: Number
 });
 mongoose.model('User',UserSchema);
-mongoose.connect('mongodb://heroku_27jg9nw0:7bsftluf0308hnhfad1lfvcr8a@ds045714.mongolab.com:45714/heroku_27jg9nw0');
+mongoose.connect('mongodb://heroku_v3c4ltwb:8ghrf2ab8jloedkb8nj7ti2ha6@ds045604.mongolab.com:45604/heroku_v3c4ltwb');
 var User = mongoose.model('User');
 
 //socket
