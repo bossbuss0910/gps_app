@@ -48,7 +48,7 @@ var UserSchema = new Schema({
 	long: Number
 });
 mongoose.model('User',UserSchema);
-mongoose.connect('mongodb://localhost/gps_app');
+mongoose.connect('mongodb://heroku_27jg9nw0:7bsftluf0308hnhfad1lfvcr8a@ds045714.mongolab.com:45714/heroku_27jg9nw0');
 var User = mongoose.model('User');
 
 //socket
