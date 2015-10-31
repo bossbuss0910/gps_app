@@ -67,6 +67,7 @@ if(process.env.XHR){
 io.sockets.on('connection', function (socket) {
 	//部屋の作成
 	socket.on('create room',function(doc){
+		console.log("hello heroku");
 		User.findOne({room:doc.room},function(err,memo){
 		//あったらfalseを送る
 		if (err||memo == null){
