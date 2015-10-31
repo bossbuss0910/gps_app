@@ -45,13 +45,13 @@ var UserSchema = new Schema({
 	long: Number
 });
 mongoose.model('User',UserSchema);
-//mongoose.connect("mongodb://heroku_v3c4ltwb:8ghrf2ab8jloedkb8nj7ti2ha6@ds045604.mongolab.com:45604/heroku_v3c4ltwb");
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost', function(err){
 	  if(err){
-		      console.error(err);
-		          process.exit(1);
-			    }
+		  console.error(err);
+		  process.exit(1);
+		  }
 });
+
 var User = mongoose.model('User');
 
 //socket
