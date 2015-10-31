@@ -7,7 +7,5 @@
     "ejs": ">= 0.0.1",
     "socet.io":"0.8",
     "mongoose":"*"
-  },
-  "devDependencies": {
   }
 }
