@@ -1,9 +1,8 @@
 //ログイン画面
-$(function() {
 
-	var socket = io.connect();
-//	var socket = new io.Socket();
-//	socket.connect();
+var socket = io.connect();
+console.log("socketOK!!");
+$(function() {
 	$('#btn').click(function() {
 		var name = $('#name');
 		var address = $('#address');
