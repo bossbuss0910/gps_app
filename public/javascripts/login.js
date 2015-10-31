@@ -5,8 +5,15 @@ $(function() {
 	
 	$('#btn').click(function() {
 		var name = $('#name');
-		var adress = $('#adress');
-		var g_name = $('#g_name');
-		socket.emit('login send', {name:name.val(),adress:adress.val(),g_name:g_name.val()});
+		var address = $('#address');
+		var room = $('#room');
+		socket.emit('enter room', {name:name.val(),address:address.val(),room:room.val()});
+	});
+
+	$('#create').click(function() {
+		var name = $('#name');
+		var address = $('#address');
+		var room = $('#room');
+		socket.emit('create room', {name:name.val(),address:address.val(),room:room.val()});
 	});
 });

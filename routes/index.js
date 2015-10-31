@@ -4,7 +4,7 @@
  */
 
 exports.index = function(req, res){
-	g_name=req.params.g_name;
+	room=req.params.room;
 	res.render('gps', { title: 'gps_app'});
 };
 

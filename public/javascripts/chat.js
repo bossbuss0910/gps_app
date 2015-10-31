@@ -2,12 +2,6 @@
 //
 var socket = io.connect('http://localhost');
 
-function gps(g_name,name){
-		socket.on('msg push', function (msg) {
-		$('#list').prepend($('<dt>' + msg.name + '</dt><dd>' + msg.lat + '</dd>'+'<dd>'+msg.long+'</dd>'));
-	});
-	
-	}
 $(function() {
 	socket.on('connect', function() { 
 		console.log('successfully sent');
@@ -16,24 +10,24 @@ $(function() {
 
 	
 	$('#btn').click(function() {
-		var adress = $('#adress');
+		var address = $('#address');
 		var name = $('#name');	 
-		var g_name = $('#g_name');
+		var room = $('#room');
 		var lat = $('#lat');
 		var long = $('#long');
-		socket.emit('msg send', {adress:adress.val(),name:name.val(),g_id:g_id.val(),lat:lat.val(),long:long.val()});
+		socket.emit('msg send', {address:address.val(),name:name.val(),room:room.val(),lat:lat.val(),long:long.val()});
 	});
 
 	$('#delete').click(function(){
-		var adress = $('#adress');
-		var name = $('#name');
-		socket.emit('deleteDB',{adress:adress.val(),name:name.val()});
+		var address = $('#address');
+		var room = $('#room');
+		socket.emit('deleteDB',{address:address.val(),room:room.val()});
 		})
 
-//	socket.on('msg push', function (msg) {
-//		console.log(msg);
-//		$('#list').prepend($('<dt>' + msg.name + '</dt><dd>' + msg.lat + '</dd>'+'<dd>'+msg.long+'</dd>'));
-//	});
+	socket.on('msg push', function (msg) {
+		console.log(msg);
+		$('#list').prepend($('<dt>' + msg.name + '</dt><dd>' + msg.lat + '</dd>'+'<dd>'+msg.long+'</dd>'));
+	});
 	
 	socket.on('msg open', function(msg){
 		console.log(msg);
