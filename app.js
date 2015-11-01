@@ -30,74 +30,118 @@ app.configure('production', function(){
 
 // Routes
 
-app.get('/gps/:g_name', routes.index);
+app.get('/gps/:room', routes.index);
 app.get('/login', routes.login);
-
-app.listen(3000, function(){
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
+app.listen(process.env.PORT || 5000, function(){
 });
-
 // DB
 
 var Schema = mongoose.Schema;
 var UserSchema = new Schema({
 	name: String,
-	adress: String,
-	g_name:String,
+	address: String,
+	room:String,
 	lat:  Number,
 	long: Number
 });
 mongoose.model('User',UserSchema);
-mongoose.connect('mongodb://localhost/gps_app');
+mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost', function(err){
+	  if(err){
+		  console.error(err);
+		  process.exit(1);
+		  }
+});
+
 var User = mongoose.model('User');
 
 //socket
 var io = require('socket.io').listen(app);
+if(process.env.XHR){
+	console.log("use xhr-polling");
+	io.configure(function(){
+		io.set('transports', ['xhr-polling']);
+		io.set('polling duration', 10);
+		});
+}
+
 io.sockets.on('connection', function (socket) {
-	socket.on('login send',function(doc){
-		socket.join(doc.g_name);
-		User.findOne({name:doc.name,adress:doc.adress,g_name:doc.g_name},function(err,memo){
-		//あったら更新、なかったら登録
+	//部屋の作成
+	socket.on('create room',function(doc){
+		User.findOne({room:doc.room},function(err,memo){
+		//あったらfalseを送る
 		if (err||memo == null){
 			//登録
 			var user =new User();
 			user.name = doc.name;
-			user.adress = doc.adress;
-                        user.g_name = doc.g_name;
+			user.address = doc.address;
+                        user.room = doc.room;
 			user.save(function(err){
 				if (err){console.log(err)}
 		   });
+			socket.emit('msg tf','true');
+		}
+		else{
+			socket.emit('msg tf','false');
+		}
+		});
+		socket.set('room', doc.room);
+		socket.set('name', doc.address);
+		// ※4 クライアントを部屋に入室させる
+		socket.join(doc.room);
+	});
+
+	//部屋に入る
+	socket.on('enter room',function(doc){
+		User.findOne({room:doc.room},function(err,memo){
+		//あったら登録し部屋に入れる
+		if (memo != null){
+		//登録
+			var user =new User();
+			user.name = doc.name;
+			user.address = doc.address;
+                        user.room = doc.room;
+			user.save(function(err){
+				if (err){console.log(err)}
+		   });	
+		socket.set('room', doc.room);
+		socket.set('name', doc.address);		
+		socket.join(doc.room);
+		}
+		else{
+			socket.emit('msg tf','false');
 		}
 		});
 	});
-	//接続された際データベースにあるデータをクライアントに送る
+
+
+/**	//接続された際データベースにあるデータをクライアントに送る
 	socket.on('msg update',function(){
 		User.find(function(err,docs){
 			socket.emit('msg open',docs);
 			});
 	});
+	**/
 	//接続の確認
 	console.log('connected');
+
 	//新規データが送られてきたらデータベースの確認
 	socket.on('msg send', function (msg) {
-
-     	　　　　client.get('g_name', function(err, _room) {
-	                   g_name = _g_name;
+		var room, name;
+     	　　　　socket.get('room', function(err, _room) {
+	                   room = _room;
 			 });
-              　 client.get('name', function(err, _name) {
+              　socket.get('name', function(err, _name) {
 		           name = _name;
 			});
-
-		User.findOne({u_id:msg.u_id},function(err,memo){
+		User.findOne({address:msg.address,room:msg.room},function(err,memo){
 		//あったら更新、なかったら登録
 		if (err||memo == null){
-			socket.emit('msg push', msg);
-			socket.broadcast.emit('msg push', msg);
+			socket.to(room).emit('msg push', msg);
 			//登録
 			var user =new User();
-			user.adress = msg.adress;
+			user.address = msg.address;
 			user.name = msg.name;
-                        user.g_id = msg.g_id;
+                        user.room = msg.room;
 			user.lat = msg.lat;
 			user.long = msg.long;
 			user.save(function(err){
@@ -109,27 +153,43 @@ io.sockets.on('connection', function (socket) {
 			memo.lat=msg.lat;
 			memo.long=msg.long;
 			memo.save();
-			User.find(function(err,docs){
-				socket.emit('msg open',docs)
+			User.find({room:msg.room},function(err,docs){
+				socket.to(room).emit('msg open',docs)
 				});
 			}
 			});
 		});
 	//DBにあるメッセージを削除
 	socket.on('deleteDB', function(drop_user){
-		User.find(function(err,docs){
-			socket.emit('msg open',docs)
-			});
-		User.remove({adress: drop_user.adress})
-		User.remove({adress: drop_user.adress }, function(err, result){
+		       var room, name;
+		       socket.get('room', function(err, _room) {
+			       room = _room;
+			       });
+		       socket.get('name', function(err, _name) {
+			       name = _name;
+			       });
+			User.remove({address: drop_user.address }, function(err, result){
 			    if (err) {
 				    console.log('remove error');
 				    } else {
 					    console.log('Success: ' + result + ' document(s) deleted');
 					    }
 			    });
+			User.find({room: drop_user.room},function(err,docs){
+				socket.to(room).emit('msg open',docs)
+			});
+	
+
 		});
 	 //セッションの切断
 	socket.on('disconnect', function() {
+		       var room, name;
+		       socket.get('room', function(err, _room) {
+			       room = _room;
+			       });
+		       socket.get('name', function(err, _name) {
+			       name = _name;
+			       });
+		       socket.leave(room);
 		console.log('disconnected');});
 });
