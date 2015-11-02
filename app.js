@@ -56,6 +56,8 @@ var User = mongoose.model('User');
 
 //socket
 var io = require('socket.io').listen(app);
+
+io.set(‘transports’,['xhr-polling']);
 /**if(process.env.XHR){
 	console.log("use xhr-polling");
 	io.configure(function(){
