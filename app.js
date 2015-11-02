@@ -32,6 +32,7 @@ app.configure('production', function(){
 
 app.get('/gps/:room', routes.index);
 app.get('/login', routes.login);
+app.get('/test',route.gps_test);
 app.listen(process.env.PORT || 5000, function(){
 });
 // DB
