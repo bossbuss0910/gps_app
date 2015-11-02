@@ -65,6 +65,7 @@ var io = require('socket.io').listen(app);
 }
 **/
 io.sockets.on('connection', function (socket) {
+	console.log("socket.io  OK");
 	//部屋の作成
 	socket.on('create room',function(doc){
 		console.log("hello heroku");
