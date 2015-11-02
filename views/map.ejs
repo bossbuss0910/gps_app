@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="UTF-8">
+		<title>Map練習</title>
+	</head>
+
+	<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script type="text/javascript" src="/javascripts/gmap.js"></script>
+	<script type="text/javascript">
+		var map;
+		$(document).ready(function(){
+			map = new GMaps({
+				div: '#map',
+				lat: 35.689161,
+				lng: 139.691781,
+				zoom: 20 // 尺度小さいほど離れていく
+			});
+
+			// ターゲット1
+			map.addMarker({
+          lat: 35.688820,
+          lng: 139.697776,
+          title: "ターゲット1",
+          <!-- icon: "finger.png",//任意の画像名 -->
+         click: function(e) {
+					alert('これはターゲット1です。');
+				 }
+      });
+
+			// ターゲット2
+			map.addMarker({
+				lat: 35.689604,
+				lng: 139.692305,
+				title: "ターゲット2(都庁)",
+
+				click: function(e) {
+					alert('これはターゲット2(都庁)です。');
+				}
+			});
+
+			// ターゲット3
+			map.addMarker({
+				lat: 35.660477,
+				lng: 139.729356,
+				title: "ターゲット3(六本木ヒルズ)",
+
+				click: function(e) {
+					alert('これはターゲット3(六本木ヒルズ)です。');
+				}
+			});
+
+			// ターゲット4
+			map.addMarker({
+				lat: 35.666863,
+				lng: 139.74954,
+				title: "ターゲット4(虎ノ門ヒルズ)",
+
+				click: function(e) {
+					alert('これはターゲット4(虎ノ門ヒルズ)です。');
+				}
+			});
+
+		});
+	</script>
+
+	<style>
+		#map {
+			width: 95%;
+			height: 500px;
+		}
+	</style>
+
+	<body>
+		<div id="map"></div>
+	</body>
+</html>

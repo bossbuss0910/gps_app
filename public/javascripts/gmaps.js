@@ -1,4 +1,5 @@
 "use strict";
+console.log("aaaa");
 (function(root, factory) {
   if(typeof exports === 'object') {
     module.exports = factory();

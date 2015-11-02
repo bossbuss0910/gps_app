@@ -8,15 +8,13 @@ exports.index = function(req, res){
 	res.render('gps', { title: 'gps_app'});
 };
 
-
 //ログイン画面
 
 exports.login = function(req,res){
 	res.render('login',{title:'login'});
- };
+	};
 
 //mapテスト
-
- exports.gps_test = function(req,res){
-	 res.render('map.html');
+exports.gps = function(req,res){
+	 res.render('map',{title:'aaa'});
 	 };

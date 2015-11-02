@@ -27,14 +27,14 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler());
 });
-
 // Routes
 
 app.get('/gps/:room', routes.index);
 app.get('/login', routes.login);
-app.get('/test',route.gps_test);
+app.get('/test', routes.gps);
 app.listen(process.env.PORT || 5000, function(){
 });
+
 // DB
 
 var Schema = mongoose.Schema;
@@ -46,7 +46,6 @@ var UserSchema = new Schema({
 	long: Number
 });
 mongoose.model('User',UserSchema);
-console.log(process.env.MONGOLAB_URI);
 mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost', function(err){
 	  if(err){
 		  console.error(err);
