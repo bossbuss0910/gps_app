@@ -1,8 +1,6 @@
 //ログイン画面
-
+var socket = io.connect();
 $(function() {
-	var socket = new io.Socket();
-	socket.connect();
 	socket.on('connect', function() {
 		console.log('クライアントconnect');
 	});
