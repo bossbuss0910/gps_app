@@ -1,5 +1,5 @@
 //ログイン画面
-var socket = io.connect("https://gps-app-meet.herokuapp.com/");
+var socket = io.connect();
 $(function() {
 	socket.on('connect', function() {
 		console.log('login connect');
