@@ -1,10 +1,10 @@
 //クライアント
 //
-var socket = io.connect();
 //var socket = new io.Socket();
 //socket.connect();
 
 $(function() {
+	var socket = io.connect();
 	socket.on('connect', function() { 
 		console.log('successfully sent');
 		socket.emit('msg update');

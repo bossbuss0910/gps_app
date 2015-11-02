@@ -1,7 +1,6 @@
 //ログイン画面
 
 var socket = io.connect();
-console.log("クライアントsocketOK!!");
 $(function() {
 	$('#btn').click(function() {
 		var name = $('#name');
@@ -11,7 +10,6 @@ $(function() {
 	});
 
 	$('#create').click(function() {
-		console.log("ボタンおk");
 		var name = $('#name');
 		var address = $('#address');
 		var room = $('#room');
