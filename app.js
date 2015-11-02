@@ -57,14 +57,14 @@ var User = mongoose.model('User');
 //socket
 var io = require('socket.io').listen(app);
 
-//io.set('transports',['xhr-polling']);
-if(process.env.XHR){
+io.set('transports',['xhr-polling']);
+/**if(process.env.XHR){
 	console.log("use xhr-polling");
 	io.configure(function(){
 		io.set('transports', ['xhr-polling']);
 		io.set('polling duration', 10);
 		});
-}
+}**/
 
 io.sockets.on('connection', function (socket) {
 	console.log("socket.io  OKKK");
