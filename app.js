@@ -53,7 +53,7 @@ mongoose.connect(process.env.MONGOLAB_URI || 'mongodb://localhost', function(err
 		  }
 });
 var User = mongoose.model('User');
-
+console.log("aaaa"+process.env.MONGOLAB_URI);
 //socket
 var io = require('socket.io').listen(app);
 /**if(process.env.XHR){
