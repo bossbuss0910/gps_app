@@ -13,3 +13,9 @@ exports.index = function(req, res){
 exports.login = function(req,res){
 	res.render('login',{title:'login'});
 	};
+
+//mapの表示
+
+exports.mapview = function(req,res){
+	res.render('map',{title:'mapview'});
+	};
