@@ -13,8 +13,3 @@ exports.index = function(req, res){
 exports.login = function(req,res){
 	res.render('login',{title:'login'});
 	};
-
-//mapテスト
-exports.gps = function(req,res){
-	 res.render('map',{title:'aaa'});
-	 };

@@ -31,7 +31,9 @@ app.configure('production', function(){
 
 app.get('/gps/:room', routes.index);
 app.get('/', routes.login);
-app.get('/test', routes.gps);
+/**app.get('/test', function (req, res) {
+	    res.sendfile(__dirname + 'views/map.html');
+});**/
 app.listen(process.env.PORT || 5000, function(){
 });
 
